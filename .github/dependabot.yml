@@ -1,0 +1,68 @@
+# .github/dependabot.yml — Dependabot Configuration
+#
+# IMPLEMENTATION_PLAN Phase 22: "Dependency vulnerability scan resolved for
+# high/critical issues; Dependabot configured."
+#
+# Scans npm ecosystem weekly. PRs are created automatically for:
+#   - Security updates (always created, regardless of schedule)
+#   - Non-security patch/minor updates (weekly, batched)
+#
+# Major version bumps (Next.js, React, Tailwind, Supabase SDK) require manual
+# review — Dependabot will open a PR but it will NOT auto-merge.
+#
+# GitHub Actions updates are also monitored so CI dependencies stay current.
+
+version: 2
+
+updates:
+  # ── npm (Next.js app) ────────────────────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 10
+    # Group non-security patches together to reduce PR noise
+    groups:
+      patch-updates:
+        patterns: ["*"]
+        update-types: ["patch"]
+      minor-updates:
+        patterns: ["*"]
+        update-types: ["minor"]
+        exclude-patterns:
+          - "next"       # Major framework upgrade needs manual review
+          - "react"
+          - "react-dom"
+          - "@supabase/*"
+    # Label all Dependabot PRs for easy filtering
+    labels:
+      - "dependencies"
+      - "automated"
+    # Commit message format
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(dev-deps)"
+      include: "scope"
+    # Ignore known acceptable dev-only vulnerabilities that can't be patched
+    # without breaking changes (e.g. tmp via @lhci/cli — tracked as dev-only risk)
+    ignore:
+      - dependency-name: "tmp"
+        # Only ignore in non-production context; re-evaluate if @lhci/cli ships a fix
+        update-types: ["version-update:semver-patch", "version-update:semver-minor"]
+
+  # ── GitHub Actions ───────────────────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "chore(ci)"
