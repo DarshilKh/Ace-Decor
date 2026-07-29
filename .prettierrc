@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "printWidth": 90,
+  "tabWidth": 2,
+  "useTabs": false,
+  "endOfLine": "lf",
+
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+
+  "importOrder": [
+    "^(react|react-dom)(.*)$",
+    "^(next)(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+
+  "tailwindFunctions": ["cn", "clsx", "cva"],
+
+  "overrides": [
+    {
+      "files": ["*.json", "*.jsonc"],
+      "options": {
+        "printWidth": 120
+      }
+    },
+    {
+      "files": ["*.md"],
+      "options": {
+        "proseWrap": "always",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": ["*.sql"],
+      "options": {
+        "singleQuote": true
+      }
+    }
+  ]
+}
