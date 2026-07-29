@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    // ── Language & Environment ───────────────────────────────────────────────
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+
+    // ── Strict Mode (RULES §3.1 — no exceptions) ────────────────────────────
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+
+    // ── Module Interop ───────────────────────────────────────────────────────
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    // ── Next.js / React ──────────────────────────────────────────────────────
+    // jsx MUST be "react-jsx" (not "preserve") — Next.js 16's SWC/Turbopack
+    // compiler always uses the automatic JSX runtime and hard-requires this
+    // value in tsconfig.json regardless of what's set; "preserve" is a
+    // Pages-Router/older-Next holdover and gets silently force-corrected by
+    // `next dev`/`next build` on every run if left wrong (see
+    // node_modules/next/dist/lib/typescript/writeConfigurationDefaults.js).
+    "jsx": "react-jsx",
+    // allowJs is only a "suggested" default Next.js injects when absent; set
+    // explicitly so a fresh `npm install && next dev` doesn't silently mutate
+    // this file. true (not false) to match Next.js's own suggested default —
+    // no functional difference for this all-TypeScript codebase, but this
+    // avoids the only other value Next would consider "already satisfied."
+    "allowJs": true,
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+
+    // ── Output ───────────────────────────────────────────────────────────────
+    // next build manages output; tsc --noEmit used for type-checking only
+    "noEmit": true,
+    "skipLibCheck": true,
+
+    // ── Path Aliases (mirrors TECHSPEC §2 folder structure) ──────────────────
+    // @/* maps to src/ root: import { X } from "@/lib/utils/format" → src/lib/utils/format
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out"
+  ]
+}
