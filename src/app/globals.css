@@ -1,0 +1,254 @@
+/*
+ * ACE DÉCOR — Global Styles
+ *
+ * Tailwind CSS v4 CSS-first configuration (TECHSPEC §20, IMPLEMENTATION_PLAN Phase 0)
+ *
+ * Key v4 conventions enforced here:
+ *   - @import "tailwindcss" replaces the v3 @tailwind directives
+ *   - @theme {} block is the single source of truth for design tokens
+ *   - No tailwind.config.ts as primary token config
+ *   - bg-linear-to-* replaces v3 bg-gradient-to-* for gradient utilities
+ *   - All token values from DESIGN_SYSTEM.md §2–§8 converted to OKLCH
+ */
+
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * @theme — Design System Tokens (DESIGN_SYSTEM.md §2–§8)
+ *
+ * OKLCH values are computed from the hex values in DESIGN_SYSTEM.md.
+ * Each line includes the source hex as a comment for traceability.
+ * Conversion: Hex → Linear sRGB → OKLab → OKLCH (CSS Color Level 4)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* ── §2 Colors — Core Palette ─────────────────────────────────────────── */
+
+  /* Primary brand color — buttons, active states, accents, links */
+  --color-primary:        oklch(0.6534 0.0862 58.25);   /* #B8835A */
+  /* Hover/active state for primary elements */
+  --color-primary-hover:  oklch(0.5770 0.0782 59.20);   /* #9C6E49 */
+  /* Page background — warm off-white */
+  --color-background:     oklch(0.9798 0.0045 78.30);   /* #FAF8F5 */
+  /* Cards, modals, inputs, elevated surfaces */
+  --color-surface:        oklch(1.0000 0.0000 0);        /* #FFFFFF */
+  /* Headings, primary text */
+  --color-heading:        oklch(0.2931 0.0000 0);        /* #2C2C2C */
+  /* Body copy, secondary text, labels */
+  --color-body:           oklch(0.5510 0.0234 264.36);  /* #6B7280 */
+  /* "In Stock", success messages, confirmations */
+  --color-success:        oklch(0.5531 0.0666 144.61);  /* #5A7D5A */
+  /* Dividers, input borders, card borders */
+  --color-border:         oklch(0.9128 0.0143 74.42);   /* #E8E1D8 */
+
+  /* ── §2.1 Colors — Derived/Supporting ───────────────────────────────── */
+
+  /* "Only Few Left" stock badge — muted warm amber */
+  --color-warning:        oklch(0.7170 0.0983 73.26);   /* #C99A5B */
+  /* "Out of Stock", destructive actions, errors — muted, NOT neon red */
+  --color-danger:         oklch(0.5649 0.1282 27.82);   /* #B5544A */
+  /* Subtle section backgrounds, hover backgrounds on neutral elements */
+  --color-muted-bg:       oklch(0.9513 0.0097 72.66);   /* #F3EEE8 */
+  /* Modal/drawer backdrops — expressed as a color with alpha in usage */
+  /* Note: --color-overlay is rgba(44,44,44,0.4); Tailwind uses bg-heading/40 pattern */
+  --color-overlay:        oklch(0.2931 0.0000 0 / 0.4); /* rgba(44,44,44,0.4) */
+
+  /* WhatsApp button — intentional brand exception to ACE DÉCOR palette (RULES §16.5) */
+  /* #25D366 — used ONLY for the floating WhatsApp FAB; not a general palette color */
+  --color-whatsapp:       oklch(0.7618 0.1754 153.12);  /* #25D366 */
+
+  /* ── §3 Typography — Font Families ──────────────────────────────────── */
+
+  /* Display / hero headings — premium serif conveying warmth and elegance */
+  --font-display: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  /* Body text + UI — clean, highly legible neutral sans-serif */
+  --font-sans:    "Inter", system-ui, -apple-system, sans-serif;
+
+  /* ── §3 Typography — Type Scale ──────────────────────────────────────── */
+  /* Strict scale from DESIGN_SYSTEM.md §3: 12/14/16/18/22/28/36/48 */
+  /* No arbitrary sizes outside this scale. */
+  --text-xs:   0.75rem;   /* 12px — captions, labels */
+  --text-sm:   0.875rem;  /* 14px — small body, button labels */
+  --text-base: 1rem;      /* 16px — default body text */
+  --text-lg:   1.125rem;  /* 18px — card headings (H3) */
+  --text-xl:   1.375rem;  /* 22px — subsection headings */
+  --text-2xl:  1.75rem;   /* 28px — section headings (H2 mobile) */
+  --text-3xl:  2.25rem;   /* 36px — page headings (H1 desktop) */
+  --text-4xl:  3rem;      /* 48px — hero/display (desktop) */
+
+  /* ── §3 Typography — Line Heights ────────────────────────────────────── */
+  --leading-tight:  1.2;  /* Headings: 1.1–1.3 */
+  --leading-snug:   1.4;  /* Compact body / card text */
+  --leading-normal: 1.6;  /* Body text: 1.4–1.6 */
+
+  /* ── §4 Spacing — 4px-based scale ───────────────────────────────────── */
+  /* Tailwind's default spacing scale already covers these with identical values. */
+  /* These are re-declared as semantic tokens for documentation clarity. */
+  --spacing-1:  0.25rem;  /* 4px  — icon-to-text gaps */
+  --spacing-2:  0.5rem;   /* 8px  — tight internal padding */
+  --spacing-3:  0.75rem;  /* 12px — form field padding */
+  --spacing-4:  1rem;     /* 16px — card padding (mobile), default gaps */
+  --spacing-6:  1.5rem;   /* 24px — section internal padding */
+  --spacing-8:  2rem;     /* 32px — gaps between major content blocks */
+  --spacing-12: 3rem;     /* 48px — section vertical padding (mobile) */
+  --spacing-16: 4rem;     /* 64px — section vertical padding (desktop) */
+  --spacing-24: 6rem;     /* 96px — large hero/section breathing room */
+
+  /* ── §5 Border Radius ────────────────────────────────────────────────── */
+  --radius-sm:   0.25rem;     /* 4px    — badges, small chips */
+  --radius-md:   0.5rem;      /* 8px    — inputs, buttons */
+  --radius-lg:   0.75rem;     /* 12px   — cards, product images */
+  --radius-xl:   1rem;        /* 16px   — modals, hero panels */
+  --radius-full: 9999px;      /* pill   — avatars, filter chips */
+
+  /* ── §6 Shadows — subtle only, never heavy/dramatic ─────────────────── */
+  --shadow-sm: 0 1px 2px oklch(0.2931 0 0 / 0.04);   /* inputs, card edges */
+  --shadow-md: 0 4px 12px oklch(0.2931 0 0 / 0.06);  /* cards on hover, dropdowns */
+  --shadow-lg: 0 8px 24px oklch(0.2931 0 0 / 0.08);  /* modals, drawers */
+
+  /* ── §7 Layout — Max content width ──────────────────────────────────── */
+  --width-content: 80rem; /* 1280px — max content width, centered */
+
+  /* ── §8 Breakpoints (mobile-first, matches DESIGN_SYSTEM.md §8) ─────── */
+  /* Tailwind v4 @theme breakpoints override the defaults                   */
+  --breakpoint-sm:  375px;   /* Mobile baseline — design starts here */
+  --breakpoint-md:  640px;   /* Small tablets */
+  --breakpoint-lg:  1024px;  /* Tablets / small laptops */
+  --breakpoint-xl:  1280px;  /* Desktop */
+  --breakpoint-2xl: 1536px;  /* Large desktop */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Base Styles
+ * Applied after Tailwind's preflight reset.
+ * Sets the design system defaults at the document level.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Smooth scroll for anchor navigation */
+    scroll-behavior: smooth;
+    /* Prevent font size inflation on iOS Safari */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    /* Subpixel antialiasing for crisp text on macOS/iOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings — display font, tight leading (DESIGN_SYSTEM §3) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+  }
+
+  /* Links — primary brand color, no underline by default */
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Focus ring — accessible, on-brand (DESIGN_SYSTEM §14) */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Images — block by default to avoid inline-element spacing quirks */
+  img, svg, video {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Form elements — inherit font from body (browser default is system font) */
+  input, textarea, select, button {
+    font: inherit;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Utility Layer — Custom utilities not expressible via @theme tokens
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Content container — max-width + centered + responsive gutters (DESIGN_SYSTEM §7) */
+  .container-content {
+    width: 100%;
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--spacing-6);   /* 24px mobile gutter */
+  }
+
+  @media (min-width: 1024px) {
+    .container-content {
+      padding-inline: var(--spacing-16); /* 64px desktop gutter */
+    }
+  }
+
+  /* Screen-reader-only — accessible visually hidden (DESIGN_SYSTEM §14) */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+/*
+ * Radix Accordion keyframes (components/ui/accordion.tsx).
+ * Animates to/from the content's measured height via the
+ * --radix-accordion-content-height CSS variable Radix sets automatically.
+ *
+ * DESIGN_SYSTEM §14 / RULES — Motion section: prefers-reduced-motion must
+ * degrade animations to instant state changes. The media query below
+ * disables the keyframe animation entirely for users with that preference,
+ * so the accordion still opens/closes correctly but without motion.
+ */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-state="open"][class*="animate-"],
+  [data-state="closed"][class*="animate-"] {
+    animation: none !important;
+  }
+}
