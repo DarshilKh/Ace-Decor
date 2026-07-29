@@ -1,0 +1,72 @@
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Next.js Build Output ───────────────────────────────────────────────────────
+.next/
+out/
+build/
+
+# ── Environment Variables (RULES §8.4 — NEVER commit real env files) ──────────
+# .env.example is the ONLY env file committed — it contains no real values.
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.staging.local
+
+# ── Netlify ────────────────────────────────────────────────────────────────────
+.netlify/
+
+# ── Supabase Local Dev ────────────────────────────────────────────────────────
+# Supabase CLI generates these locally — not committed
+.supabase/
+supabase/.temp/
+
+# ── TypeScript ────────────────────────────────────────────────────────────────
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Editor / OS ───────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# ── Misc ───────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.cache/
+tmp/
+temp/
+
+# Test artefacts (Phase 13)
+/coverage/
+/playwright-report/
+/playwright-results/
+/test-results/
+
+# Lighthouse CI artefacts (Phase 21)
+/.lighthouseci/
